@@ -81,6 +81,6 @@ def to_camel_case(underscore_str):
                 result.append(char.upper())
                 flag = 0
             else:
-                result.append(char)
+                result.append(char.lower())
     camelcase_str = "".join(result)
     return camelcase_str
