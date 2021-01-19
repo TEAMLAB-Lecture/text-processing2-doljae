@@ -72,9 +72,11 @@ def to_camel_case(underscore_str):
     """
     result = []
     flag = 0
+    flag2 = 0
     for char in list(underscore_str):
         if char == "_" and result:
             flag=1
+            flag2=1
         elif char == "_" and not result:
             continue
         else:
@@ -85,6 +87,9 @@ def to_camel_case(underscore_str):
                     result.append(char.upper())
                     flag = 0
                 else:
-                    result.append(char.lower())
+                    if not flag2:
+                        result.append(char)
+                    else:
+                        result.append(char.lower())
     camelcase_str = "".join(result)
     return camelcase_str
