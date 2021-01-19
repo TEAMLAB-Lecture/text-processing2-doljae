@@ -74,8 +74,8 @@ def to_camel_case(underscore_str):
     flag = 0
     for char in list(underscore_str):
         if char == "_":
-            flag = 1
-            continue
+            if result:
+                flag=1
         else:
             if not result:
                 result.append(char.lower())
