@@ -77,7 +77,7 @@ def to_camel_case(underscore_str):
             flag = 1
             continue
         else:
-            if flag:
+            if flag and not result:
                 result.append(char.upper())
                 flag = 0
             else:
