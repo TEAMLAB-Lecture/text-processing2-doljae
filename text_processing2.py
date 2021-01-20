@@ -70,26 +70,42 @@ def to_camel_case(underscore_str):
             # >>> tp2.to_camel_case(underscore_str3)
             "alreadyCamel"
     """
+    from collections import deque
     result = []
-    flag = 0
-    flag2 = 0
-    for char in list(underscore_str):
-        if char == "_" and result:
-            flag=1
+    dq = deque(list(underscore_str))
+    while dq and dq[0] == "_":
+        dq.popleft()
+    while dq and dq[-1] == "_":
+        dq.pop()
+    flag2=0
+    for item in dq:
+        if item=="_":
             flag2=1
-        elif char == "_" and not result:
-            continue
-        else:
+            break
+    if flag2:
+        underscore_flag, flag = 0, 0
+        while dq:
+            cur = dq.popleft()
             if not result:
-                result.append(char.lower())  
+                result.append(cur.lower())
             else:
-                if flag:
-                    result.append(char.upper())
-                    flag = 0
+                if cur == "_":
+                    underscore_flag = 1
+                    flag = 1
                 else:
-                    if not flag2:
-                        result.append(char)
+                    if not flag:
+                        result.append(cur.lower())
                     else:
-                        result.append(char.lower())
+                        if underscore_flag:
+                            if flag:
+                                result.append(cur.upper())
+                                underscore_flag = 0
+                            else:
+                                result.append(cur.upper())
+                                underscore_flag = 0
+                        else:
+                            result.append(cur.lower())
+    else:
+        result=list(dq)
     camelcase_str = "".join(result)
     return camelcase_str
