@@ -20,15 +20,21 @@ def digits_to_words(input_string):
             ex - 'one nine one zero four'
 
         Examples:
-            >>> import text_processing2 as tp2
-            >>> digits_str1 = "Zip Code: 19104"
-            >>> tp2.digits_to_words(digits_str1)
-            'one nine one zero four'
-            >>> digits_str2 = "Pi is 3.1415..."
-            >>> tp2.digits_to_words(digits_str2)
+            # >>> import text_processing2 as tp2
+            # >>> digits_str1 = "Zip Code: 19104"
+            # >>> tp2.digits_to_words(digits_str1)
+            # 'one nine one zero four'
+            # >>> digits_str2 = "Pi is 3.1415..."
+            # >>> tp2.digits_to_words(digits_str2)
             'three one four one five'
     """
-    digit_string = None
+    digit_dict = {0: "zero", 1: "one", 2: "two", 3: "three", 4: "four", 5: "five", 6: "six", 7: "seven", 8: "eight",
+                  9: "nine"}
+    result = []
+    for char in list(input_string):
+        if char.isdigit() is True:
+            result.append(digit_dict[int(char)])
+    digit_string = " ".join(result)
     return digit_string
 
 
@@ -53,16 +59,53 @@ def to_camel_case(underscore_str):
             camelcase_str (string): camelcase를 따른 스트링
 
         Examples:
-            >>> import text_processing2 as tp2
-            >>> underscore_str1 = "to_camel_case"
-            >>> tp2.to_camel_case(underscore_str1)
-            "toCamelCase"
-            >>> underscore_str2 = "__EXAMPLE__NAME__"
-            >>> tp2.to_camel_case(underscore_str2)
-            "exampleName"
-            >>> underscore_str3 = "alreadyCamel"
-            >>> tp2.to_camel_case(underscore_str3)
+            # >>> import text_processing2 as tp2
+            # >>> underscore_str1 = "to_camel_case"
+            # >>> tp2.to_camel_case(underscore_str1)
+            # "toCamelCase"
+            # >>> underscore_str2 = "__EXAMPLE__NAME__"
+            # >>> tp2.to_camel_case(underscore_str2)
+            # "exampleName"
+            # >>> underscore_str3 = "alreadyCamel"
+            # >>> tp2.to_camel_case(underscore_str3)
             "alreadyCamel"
     """
-    camelcase_str = None
+    from collections import deque
+    result = []
+    dq = deque(list(underscore_str))
+    while dq and dq[0] == "_":
+        dq.popleft()
+    while dq and dq[-1] == "_":
+        dq.pop()
+    flag2=0
+    for item in dq:
+        if item=="_":
+            flag2=1
+            break
+    if flag2:
+        underscore_flag, flag = 0, 0
+        while dq:
+            cur = dq.popleft()
+            if not result:
+                result.append(cur.lower())
+            else:
+                if cur == "_":
+                    underscore_flag = 1
+                    flag = 1
+                else:
+                    if not flag:
+                        result.append(cur.lower())
+                    else:
+                        if underscore_flag:
+                            if flag:
+                                result.append(cur.upper())
+                                underscore_flag = 0
+                            else:
+                                result.append(cur.upper())
+                                underscore_flag = 0
+                        else:
+                            result.append(cur.lower())
+    else:
+        result=list(dq)
+    camelcase_str = "".join(result)
     return camelcase_str
